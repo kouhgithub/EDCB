@@ -204,6 +204,10 @@ DWORD CSendTSTCPMain::AddSendData(
 		//UDPは基本的にブロックしない(輻輳制御がない)のでここで送る
 		for( auto itr = m_udpSockList.cbegin(); itr != m_udpSockList.end(); itr++ ){
 			for( DWORD dwRead = 0; dwRead < dwSize; ){
+				//VLC等のプレーヤーのUDPに送るかBonDriver_UDPに送るか判別する
+				
+				//VLC等のプレーヤーのUDPに送る場合
+				
 				//ペイロード分割。BonDriver_UDPに送る場合は受信サイズ48128以下でなければならない
 				int len = (int)min((DWORD)max(itr->maxSendSize, 1), dwSize - dwRead);
 				if( sendto(itr->sock, (const char*)(pbData + dwRead), len, 0, (const sockaddr*)&itr->addr, (int)itr->addrlen) < 0 ){
